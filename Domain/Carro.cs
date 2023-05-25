@@ -11,14 +11,17 @@ namespace Domain
     public class Carro : Entity
     {
         [StringLength(100)]
-        public string Nome { get; private set; }
+        public string Nome { get;  set; }
 
-        public int Potencia { get; private set; }
+        public int Potencia { get; set; }
 
-        public Carro(Guid id, string nome, int potencia) : base(id)
+        public DateTime DtNascimento { get; set; }
+
+        public Carro(string nome, int potencia, DateTime dtNascimento)
         {
             Nome = nome;
             Potencia = potencia;
+            DtNascimento = dtNascimento;
         }
     }
 }

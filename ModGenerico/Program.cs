@@ -3,6 +3,8 @@ using Data.Repositories.Abstractions;
 using Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using core.Models;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -15,8 +17,10 @@ builder.Services.AddControllers();
 //builder.Services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
 //builder.Services.AddTransient(typeof(ITecnologiaRepository), typeof(TecnologiaRepository));
 //builder.Services.AddTransient(typeof(ITipoTecnologiaRepository), typeof(TipoTecnologiaRepository));
-builder.Services.AddTransient<ICarroRepository, CarroRepository>();
-
+builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+builder.Services.AddScoped<IPessoaAbstractRepository, PessoaAbstractRepository>();
+builder.Services.AddScoped<IDadosPessoaisAbstractRepository, DadosPessoaisAbstractRepository>();
+builder.Services.AddScoped<ICarroRepository, CarroRepository>();
 
 //builder.Services.AddScoped<IUnitOfWork,  UnitOfWork>();
 

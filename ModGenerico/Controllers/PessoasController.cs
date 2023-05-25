@@ -12,55 +12,55 @@ namespace ModGenerico.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarroesController : ControllerBase
+    public class PessoasController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public CarroesController(AppDbContext context)
+        public PessoasController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Carroes
+        // GET: api/Pessoas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Carro>>> GetCarros()
+        public async Task<ActionResult<IEnumerable<Pessoa>>> GetPessoas()
         {
-          if (_context.Carros == null)
+          if (_context.Pessoas == null)
           {
               return NotFound();
           }
-            return await _context.Carros.ToListAsync();
+            return await _context.Pessoas.ToListAsync();
         }
 
-        // GET: api/Carroes/5
+        // GET: api/Pessoas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Carro>> GetCarro(Guid id)
+        public async Task<ActionResult<Pessoa>> GetPessoa(int id)
         {
-          if (_context.Carros == null)
+          if (_context.Pessoas == null)
           {
               return NotFound();
           }
-            var carro = await _context.Carros.FindAsync(id);
+            var pessoa = await _context.Pessoas.FindAsync(id);
 
-            if (carro == null)
+            if (pessoa == null)
             {
                 return NotFound();
             }
 
-            return carro;
+            return pessoa;
         }
 
-        // PUT: api/Carroes/5
+        // PUT: api/Pessoas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCarro(Guid id, Carro carro)
+        public async Task<IActionResult> PutPessoa(int id, Pessoa pessoa)
         {
-            if (id != carro.Id)
+            if (id != pessoa.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(carro).State = EntityState.Modified;
+            _context.Entry(pessoa).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace ModGenerico.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CarroExists(id))
+                if (!PessoaExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace ModGenerico.Controllers
             return NoContent();
         }
 
-        // POST: api/Carroes
+        // POST: api/Pessoas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Carro>> PostCarro(Carro carro)
+        public async Task<ActionResult<Pessoa>> PostPessoa(Pessoa pessoa)
         {
-          if (_context.Carros == null)
+          if (_context.Pessoas == null)
           {
-              return Problem("Entity set 'AppDbContext.Carros'  is null.");
+              return Problem("Entity set 'AppDbContext.Pessoas'  is null.");
           }
-            _context.Carros.Add(carro);
+            _context.Pessoas.Add(pessoa);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCarro", new { id = carro.Id }, carro);
+            return CreatedAtAction("GetPessoa", new { id = pessoa.Id }, pessoa);
         }
 
-        // DELETE: api/Carroes/5
+        // DELETE: api/Pessoas/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCarro(Guid id)
+        public async Task<IActionResult> DeletePessoa(int id)
         {
-            if (_context.Carros == null)
+            if (_context.Pessoas == null)
             {
                 return NotFound();
             }
-            var carro = await _context.Carros.FindAsync(id);
-            if (carro == null)
+            var pessoa = await _context.Pessoas.FindAsync(id);
+            if (pessoa == null)
             {
                 return NotFound();
             }
 
-            _context.Carros.Remove(carro);
+            _context.Pessoas.Remove(pessoa);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CarroExists(Guid id)
+        private bool PessoaExists(int id)
         {
-            return (_context.Carros?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Pessoas?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
