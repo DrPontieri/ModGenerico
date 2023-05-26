@@ -28,7 +28,7 @@ namespace ModGenerico.Controllers
         [HttpPost]
         public async Task<ActionResult<Carro>> PostAbstractCarro(Carro carro)
         {
-            var ObjCarro = new Carro(nome: "Daniel", potencia: 1, dtNascimento: new DateTime(28/03/1979));
+            var ObjCarro = new Carro(nome: "Daniel", potencia: 1);
             await _icarrorepository.AddAsync(carro);
             return Ok(ObjCarro);
         }

@@ -15,13 +15,10 @@ namespace Domain
 
         public int Potencia { get; set; }
 
-        public DateTime DtNascimento { get; set; }
-
-        public Carro(string nome, int potencia, DateTime dtNascimento)
+        public Carro(string nome, int potencia)
         {
             Nome = nome;
             Potencia = potencia;
-            DtNascimento = dtNascimento;
         }
     }
 }
