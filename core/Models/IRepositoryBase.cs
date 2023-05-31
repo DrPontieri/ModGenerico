@@ -9,8 +9,8 @@ namespace core.Models
 {
     public interface IRepositoryBase<TEntity> where TEntity : Entity
     {
-        Task<IEnumerable<TEntity>> Obter(Expression<Func<TEntity, bool>> filter = null);
-        Task<TEntity> ObterPorIdAsync(Guid id);
+        Task<ICollection<TEntity>> Obter(Expression<Func<TEntity, bool>> filter = null);
+        Task<TEntity> ObterPorIdAsync(int id);
         Task AddAsync(TEntity entity);
         Task DeletarAsync(TEntity entity);
         Task Atualizar(TEntity entity);

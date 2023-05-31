@@ -33,7 +33,7 @@ namespace Data.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<TEntity> ObterPorIdAsync(Guid id)
+        public async Task<TEntity> ObterPorIdAsync(int id)
         {
             return await _DbSet.FindAsync(id);
         }
@@ -54,6 +54,18 @@ namespace Data.Repositories
         {
             _DbSet.Update(entity);
             await _AppDbContext.SaveChangesAsync();
+        }
+
+        async Task<ICollection<TEntity>> IRepositoryBase<TEntity>.Obter(Expression<Func<TEntity, bool>> filter)
+        {
+            var query = _DbSet.AsQueryable();
+
+            if (filter != null)
+                query = query
+                    .Where(filter)
+                    .AsNoTracking();
+
+            return await query.ToListAsync();
         }
     }
 }

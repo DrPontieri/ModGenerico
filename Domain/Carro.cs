@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class Carro : Entity
+    public partial class Carro : Entity
     {
         [StringLength(100)]
         public string Nome { get;  set; }

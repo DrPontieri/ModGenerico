@@ -1,4 +1,25 @@
-﻿{
+{
+  "profiles": {
+    "ModGenerico": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7095;http://localhost:5017",
+      "hotReloadEnabled": false
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -8,23 +29,20 @@
       "sslPort": 44390
     }
   },
-  "profiles": {
-    "ModGenerico": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7095;http://localhost:5017",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+  "profileContent": {
+    "properties": {
+      "commandName": {
+        "type": "string",
+        "description": "Identifies the debug target to run.",
+        "enum": [
+          "Executable",
+          "Project",
+          "IIS",
+          "IISExpress"//,
+          //"DebugRoslynComponent",
+          //"Docker",
+          //"DockerCompose"
+        ]
       }
     }
   }

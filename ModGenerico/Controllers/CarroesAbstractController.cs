@@ -23,6 +23,16 @@ namespace ModGenerico.Controllers
             _icarrorepository = icarrorepository;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Carro>>> GetCarros()
+        {
+            if (_icarrorepository == null)
+            {
+                return NotFound();
+            }
+            return _icarrorepository.Obter().Result.ToList<Carro>();
+        }
+
         // POST: api/Carroes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

@@ -11,18 +11,20 @@ using System.Threading.Tasks;
 namespace Domain
 {
     [Table("Pessoa")]
-    public class Pessoa : Entity
+    public partial class Pessoa : Entity
     {
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DataCadastro { get => DateTime.Now; private set => value.ToString(); }
-
-        public ICollection<DadosPessoais> lstDadosPessoais => new List<DadosPessoais>();
+        
+        public ICollection<DadosPessoais> LstDadosPessoais { get; set; }
 
         public Pessoa(DateTime? dataCadastro)
-        { 
+        {
             DataCadastro = dataCadastro;
         }
+
+
 
 
 

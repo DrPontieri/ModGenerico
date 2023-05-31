@@ -1,4 +1,5 @@
-﻿using Data.Context;
+﻿using core.Models;
+using Data.Context;
 using Data.Repositories.Abstractions;
 using Domain;
 using System;
@@ -9,11 +10,18 @@ using System.Threading.Tasks;
 
 namespace Data.Repositories
 {
-    public class DadosPessoaisAbstractRepository : RepositoryBase<DadosPessoais>, IDadosPessoaisAbstractRepository
+    public class DadosPessoaisAbstractRepository : IDadosPessoaisAbstractRepository
     {
-        public DadosPessoaisAbstractRepository(AppDbContext appContext) : base(appContext)
-        {
+        private readonly IRepositoryBase<DadosPessoais> _dadospessoaisRepository;
 
+        public DadosPessoaisAbstractRepository(IRepositoryBase<DadosPessoais> dadospessoaisRepository)
+        {
+            _dadospessoaisRepository = dadospessoaisRepository;
+        }
+
+        public async Task AddAsync(DadosPessoais entity)
+        {
+            await _dadospessoaisRepository.AddAsync(entity);
         }
     }
 }

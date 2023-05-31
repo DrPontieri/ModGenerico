@@ -14,14 +14,32 @@ namespace Data.Repositories
     {
 
         private readonly IRepositoryBase<Pessoa> _pessoaRepository;
-        public PessoaAbstractRepository(IRepositoryBase<Pessoa> pessoaRepository)
+        private readonly IRepositoryBase<DadosPessoais> _dadospessoaisRepository;
+        public PessoaAbstractRepository(IRepositoryBase<Pessoa> pessoaRepository, IRepositoryBase<DadosPessoais> dadospessoaisRepository)
         {
             _pessoaRepository = pessoaRepository;
+            _dadospessoaisRepository = dadospessoaisRepository;
         }
-
-        public async Task AddAsync(Pessoa entity)
+        
+        public async Task AddPessoaAsync(Pessoa entity)
         {
             await _pessoaRepository.AddAsync(entity);
+
+        }
+
+        public async Task AddDadosPessoaisAsync(DadosPessoais entity)
+        {
+            await _dadospessoaisRepository.AddAsync(entity);
+        }
+
+        public async Task<Pessoa> GetPessoasId(int id)
+        {
+            return await _pessoaRepository.ObterPorIdAsync(id);
+        }
+
+        public async Task<ICollection<Pessoa>> ObterPessoas()
+        {
+            return await _pessoaRepository.Obter();
         }
     }
 }

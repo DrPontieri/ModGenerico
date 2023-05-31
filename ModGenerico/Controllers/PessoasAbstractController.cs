@@ -9,6 +9,9 @@ using Data.Context;
 using Domain;
 using Data.Repositories.Abstractions;
 using Data.Repositories;
+using core.Models;
+using NuGet.Protocol;
+using Domain.Dto;
 
 namespace ModGenerico.Controllers
 {
@@ -16,21 +19,49 @@ namespace ModGenerico.Controllers
     [ApiController]
     public class PessoasAbstractController : ControllerBase
     {
-        private readonly IPessoaAbstractRepository _pessoaabstractrepository;
-         
+        private IPessoaAbstractRepository _pessoaabstractrepository;
+
+
         public PessoasAbstractController(IPessoaAbstractRepository pessoaabstractrepository)
         {
+
             pessoaabstractrepository = _pessoaabstractrepository;
+
         }
 
-        // POST: api/Pessoas
+        // GET: api/Pessoas/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Pessoa>> GetPessoasId(int id)
+        {
+             var pessoa = await _pessoaabstractrepository.GetPessoasId(id);
+
+            if (pessoa == null)
+            {
+                return NotFound();
+            }
+
+            return CreatedAtAction("ObterPesssoa", new { id = pessoa.Id }, pessoa);
+        }
+
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Pessoa>> PostPessoa(Pessoa pessoa)
+        public async Task<ActionResult<Pessoa>> PostPessoa(PostDadosPessoaisDto request)
         {
-            var ObjPessoa = new Pessoa(DateTime.Now);
-            await _pessoaabstractrepository.AddAsync(ObjPessoa);
-            return Ok(ObjPessoa);
+            var pessoa = await _pessoaabstractrepository.GetPessoasId(request.PessoaID);
+            if(pessoa == null)
+            {
+                pessoa = new Pessoa(DateTime.Now);
+                int PessooaId = _pessoaabstractrepository.AddPessoaAsync(pessoa).Id;
+            }
+            pessoa.LstDadosPessoais.Add(new DadosPessoais("Danel", "email@email.com.br", "Brasil", DateTime.Now));
+            pessoa.Id = _pessoaabstractrepository.AddPessoaAsync(pessoa).Id;
+
+            
+
+            //pessoa.DadosPessoais = new DadosPessoais("Danel", "email@email.com.br", "Brasil", pessoaId, DateTime.Now);
+                        
+            return CreatedAtAction("ObterPesssoa", new { id = pessoa.Id }, pessoa);
+
         }
     }
 }

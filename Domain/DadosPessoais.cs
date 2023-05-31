@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Domain
 {
     [Table("DadosPessoais")]
-    public class DadosPessoais : Entity
+    public partial class DadosPessoais : Entity
     {
         [MaxLength(100)]
         [Column(TypeName = "varchar")]
@@ -28,18 +28,19 @@ namespace Domain
         [Column(TypeName = "datetime")]
         public DateTime? DtNascimento { get; private set; }
 
-        public int Fk_Pessoa_DadosPessoais { get; set; }
+        [NotMapped]
+        public Pessoa Pessoa { get; set; }
+        public int PessoaId { get; set; }
 
-        public Pessoa Pessoa { get; private set; }
-        
-        public DadosPessoais(string nome, string email, string pais, int fk_Pessoa_DadosPessoais, DateTime? dtNascimento)
+        public DadosPessoais(string nome, string email, string pais, DateTime? dtNascimento)
         {
             Nome = nome;
             Email = email;
             Pais = pais;
-            Fk_Pessoa_DadosPessoais = fk_Pessoa_DadosPessoais;
             DtNascimento = dtNascimento;
         }
+
+
 
 
 

@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace Data.Repositories.Abstractions
 {
-    public interface IDadosPessoaisAbstractRepository : IRepositoryBase<DadosPessoais>
+    public interface IDadosPessoaisAbstractRepository
     {
+        Task AddAsync(DadosPessoais entity);
 
     }
 }
