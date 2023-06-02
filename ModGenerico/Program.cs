@@ -20,7 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<IPessoaAbstractRepository, PessoaAbstractRepository>();
 builder.Services.AddScoped<IDadosPessoaisAbstractRepository, DadosPessoaisAbstractRepository>();
-builder.Services.AddScoped<ICarroRepository, CarroRepository>();
+//builder.Services.AddScoped<ICarroRepository, CarroRepository>();
 
 //builder.Services.AddScoped<IUnitOfWork,  UnitOfWork>();
 
@@ -32,6 +32,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    //c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+    //c.IgnoreObsoleteActions();
+    //c.IgnoreObsoleteProperties();
+    //c.CustomSchemaIds(type => type.FullName);
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "RecrutadoresWeb", Version = "v1" });
 });
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230528203924_ini")]
-    partial class ini
+    [Migration("20230601100216_ajustecamposbanco")]
+    partial class ajustecamposbanco
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,27 +24,6 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Domain.Carro", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Potencia")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Carros");
-                });
-
             modelBuilder.Entity("Domain.DadosPessoais", b =>
                 {
                     b.Property<int>("Id")
@@ -53,23 +32,54 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("DtNascimento")
-                        .HasColumnType("datetime");
+                    b.Property<DateTime>("DtNascimento")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Pais")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PessoaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PessoaId")
+                        .IsUnique();
+
+                    b.ToTable("DadosPessoais");
+                });
+
+            modelBuilder.Entity("Domain.Logradouro", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Complemento")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Endereço")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
 
                     b.Property<int>("PessoaId")
                         .HasColumnType("int");
@@ -78,7 +88,7 @@ namespace Data.Migrations
 
                     b.HasIndex("PessoaId");
 
-                    b.ToTable("DadosPessoais");
+                    b.ToTable("Logradouro");
                 });
 
             modelBuilder.Entity("Domain.Pessoa", b =>
@@ -89,7 +99,7 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("DataCadastro")
+                    b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -100,7 +110,18 @@ namespace Data.Migrations
             modelBuilder.Entity("Domain.DadosPessoais", b =>
                 {
                     b.HasOne("Domain.Pessoa", "Pessoa")
-                        .WithMany("LstDadosPessoais")
+                        .WithOne("DadosPessoais")
+                        .HasForeignKey("Domain.DadosPessoais", "PessoaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pessoa");
+                });
+
+            modelBuilder.Entity("Domain.Logradouro", b =>
+                {
+                    b.HasOne("Domain.Pessoa", "Pessoa")
+                        .WithMany("Logradouros")
                         .HasForeignKey("PessoaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -110,7 +131,10 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Domain.Pessoa", b =>
                 {
-                    b.Navigation("LstDadosPessoais");
+                    b.Navigation("DadosPessoais")
+                        .IsRequired();
+
+                    b.Navigation("Logradouros");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,16 +12,21 @@ namespace Data.Context
 
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<DadosPessoais>()
-        //        .HasOne<Pessoa>(e => e.PessoaDados)
-        //        .WithOne(e => e.Dados_Pessoa)
-        //        .HasForeignKey<DadosPessoais>(s => s.Fk_Pessoa_DadosPessoais)
-        //        .IsRequired();
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Pessoa>()
+                .HasOne(e => e.DadosPessoais)
+                .WithOne(e => e.Pessoa)
+                .HasForeignKey<DadosPessoais>(e => e.PessoaId)
+                .IsRequired();
 
-        public DbSet<Carro> Carros { get; set; }
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(e => e.Logradouros)
+                .WithOne(e => e.Pessoa)
+                .IsRequired();
+        }
+
+        //public DbSet<Carro> Carros { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<DadosPessoais> DadosPessoaisS { get; set; }
     }

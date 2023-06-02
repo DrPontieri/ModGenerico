@@ -20,11 +20,16 @@ namespace Data.Repositories
             _pessoaRepository = pessoaRepository;
             _dadospessoaisRepository = dadospessoaisRepository;
         }
-        
-        public async Task AddPessoaAsync(Pessoa entity)
-        {
-            await _pessoaRepository.AddAsync(entity);
 
+        public async Task<Pessoa> AddPessoaAsync(Pessoa entity)
+        {
+             var pessoa = await _pessoaRepository.AddAsync(entity);
+
+            //entity.DadosPessoais.PessoaId = entity.Id;
+
+            //await _dadospessoaisRepository.AddAsync(entity.DadosPessoais);
+
+            return entity;
         }
 
         public async Task AddDadosPessoaisAsync(DadosPessoais entity)

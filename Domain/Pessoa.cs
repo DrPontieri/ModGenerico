@@ -13,16 +13,16 @@ namespace Domain
     [Table("Pessoa")]
     public partial class Pessoa : Entity
     {
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? DataCadastro { get => DateTime.Now; private set => value.ToString(); }
+        public DateTime DataCadastro { get; set; }
         
-        public ICollection<DadosPessoais> LstDadosPessoais { get; set; }
+        public DadosPessoais DadosPessoais { get; set; }
 
-        public Pessoa(DateTime? dataCadastro)
-        {
-            DataCadastro = dataCadastro;
-        }
+        public List<Logradouro> Logradouros { get; set;}
+
+        //public Pessoa(DateTime? dataCadastro)
+        //{
+        //    DataCadastro = dataCadastro;
+        //}
 
 
 

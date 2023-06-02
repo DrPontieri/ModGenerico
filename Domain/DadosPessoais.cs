@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain
@@ -12,33 +13,25 @@ namespace Domain
     [Table("DadosPessoais")]
     public partial class DadosPessoais : Entity
     {
-        [MaxLength(100)]
-        [Column(TypeName = "varchar")]
-        public string Nome { get; private set; }
+        public string Nome { get; set; }
 
-        [MaxLength(100)]
-        [Column(TypeName = "varchar")]
-        public string Email { get; private set; }
+        public string Email { get; set; }
 
-        [MaxLength(100)]
-        [Column(TypeName = "varchar")]
-        public string Pais { get; private set; }
+        public string Pais { get; set; }
 
+        public DateTime DtNascimento { get; set; }
 
-        [Column(TypeName = "datetime")]
-        public DateTime? DtNascimento { get; private set; }
-
-        [NotMapped]
+        [JsonIgnore]
         public Pessoa Pessoa { get; set; }
         public int PessoaId { get; set; }
 
-        public DadosPessoais(string nome, string email, string pais, DateTime? dtNascimento)
-        {
-            Nome = nome;
-            Email = email;
-            Pais = pais;
-            DtNascimento = dtNascimento;
-        }
+        //public DadosPessoais(string nome, string email, string pais, DateTime? dtNascimento)
+        //{
+        //    Nome = nome;
+        //    Email = email;
+        //    Pais = pais;
+        //    DtNascimento = dtNascimento;
+        //}
 
 
 

@@ -19,49 +19,75 @@ namespace ModGenerico.Controllers
     [ApiController]
     public class PessoasAbstractController : ControllerBase
     {
-        private IPessoaAbstractRepository _pessoaabstractrepository;
+        private readonly IPessoaAbstractRepository _pessoaabstractrepository;
+        private readonly IDadosPessoaisAbstractRepository _dadospessoaisbstractrepository;
 
 
-        public PessoasAbstractController(IPessoaAbstractRepository pessoaabstractrepository)
+        public PessoasAbstractController(IPessoaAbstractRepository pessoaabstractrepository, IDadosPessoaisAbstractRepository dadospessoaisbstractrepository)
         {
-
-            pessoaabstractrepository = _pessoaabstractrepository;
-
+            _pessoaabstractrepository = pessoaabstractrepository;
+            _dadospessoaisbstractrepository = dadospessoaisbstractrepository;   
         }
 
         // GET: api/Pessoas/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Pessoa>> GetPessoasId(int id)
         {
-             var pessoa = await _pessoaabstractrepository.GetPessoasId(id);
+             
+            var pessoa = await _pessoaabstractrepository.GetPessoasId(id);
 
             if (pessoa == null)
             {
                 return NotFound();
             }
 
-            return CreatedAtAction("ObterPesssoa", new { id = pessoa.Id }, pessoa);
+            return Ok(pessoa);
+            //return CreatedAtAction("ObterPesssoa", new { id = pessoa.Id }, pessoa);
         }
 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Pessoa>> PostPessoa(PostDadosPessoaisDto request)
+        public async Task<ActionResult<Pessoa>> PostPessoa(PostPessoaDto request)
         {
-            var pessoa = await _pessoaabstractrepository.GetPessoasId(request.PessoaID);
-            if(pessoa == null)
-            {
-                pessoa = new Pessoa(DateTime.Now);
-                int PessooaId = _pessoaabstractrepository.AddPessoaAsync(pessoa).Id;
-            }
-            pessoa.LstDadosPessoais.Add(new DadosPessoais("Danel", "email@email.com.br", "Brasil", DateTime.Now));
-            pessoa.Id = _pessoaabstractrepository.AddPessoaAsync(pessoa).Id;
+            Pessoa PessoaOK = new Pessoa();
 
-            
+            if (request.Id == 0)
+            {
+                var NewPessoa = new Pessoa();
+                NewPessoa.DataCadastro = DateTime.Now;
+
+                PessoaOK = await _pessoaabstractrepository.AddPessoaAsync(NewPessoa);
+            }
+
+            PostDadosPessoaisDto Dados = new PostDadosPessoaisDto();
+            Dados.nome = request.nome;
+            Dados.pais = request.pais;
+            Dados.email = request.email;
+            Dados.dtNacimento = request.dtNacimento;
+            Dados.PessoaID = PessoaOK.Id;
+
+            return CreatedAtAction("CreateDadosPessoais", PessoaOK, Dados);
+        }
+
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
+        [HttpPost("CreateDP")]
+        public async Task<ActionResult<Pessoa>> CreateDadosPessoais(PostDadosPessoaisDto request)
+        {
+            Pessoa PessoaOK = new Pessoa();
+
+            if (request.PessoaID == 0)
+            {
+                var NewPessoa = new Pessoa();
+                NewPessoa.DataCadastro = DateTime.Now;
+
+                PessoaOK = await _pessoaabstractrepository.AddPessoaAsync(NewPessoa);
+            }
+
+            return CreatedAtAction("GetPessoasId", new { id = PessoaOK.Id }, PessoaOK);
+
 
             //pessoa.DadosPessoais = new DadosPessoais("Danel", "email@email.com.br", "Brasil", pessoaId, DateTime.Now);
-                        
-            return CreatedAtAction("ObterPesssoa", new { id = pessoa.Id }, pessoa);
-
         }
     }
 }

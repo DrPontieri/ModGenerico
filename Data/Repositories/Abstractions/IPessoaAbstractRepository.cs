@@ -11,7 +11,7 @@ namespace Data.Repositories.Abstractions
 {
     public interface IPessoaAbstractRepository
     {
-        Task AddPessoaAsync(Pessoa entity);
+        Task<Pessoa> AddPessoaAsync(Pessoa entity);
 
         Task AddDadosPessoaisAsync(DadosPessoais entity);
 
