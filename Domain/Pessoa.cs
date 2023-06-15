@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain
@@ -14,10 +15,9 @@ namespace Domain
     public partial class Pessoa : Entity
     {
         public DateTime DataCadastro { get; set; }
-        
         public DadosPessoais DadosPessoais { get; set; }
 
-        public List<Logradouro> Logradouros { get; set;}
+        //public List<Logradouro> Logradouros { get; set;}
 
         //public Pessoa(DateTime? dataCadastro)
         //{

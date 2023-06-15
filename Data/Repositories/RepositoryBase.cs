@@ -1,6 +1,8 @@
 ﻿using core.Models;
 using Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +23,30 @@ namespace Data.Repositories
             _AppDbContext = appContext;
         }
 
+        public async Task<TEntity> ObterObj(Expression<Func<TEntity, bool>> filter = null)
+        {
+            var query = _DbSet.AsQueryable();
+
+            if (filter != null)
+                query = query
+                    .Where(filter)
+                    .AsNoTracking();
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<ICollection<TEntity>> ObterList(Expression<Func<TEntity, bool>> filter = null)
+        {
+            var query = _DbSet.AsQueryable();
+
+            if (filter != null)
+                query = query
+                    .Where(filter)
+                    .AsNoTracking();
+
+            return await query.ToListAsync();
+        }
+
         public async Task<ICollection<TEntity>> Obter(Expression<Func<TEntity, bool>> filter = null)
         {
             var query = _DbSet.AsQueryable();
@@ -36,6 +62,14 @@ namespace Data.Repositories
         public async Task<TEntity> ObterPorIdAsync(int id)
         {
             return await _DbSet.FindAsync(id);
+        }
+
+        public TEntity Add(TEntity entity)
+        {
+            _DbSet.AddAsync(entity);
+            _AppDbContext.SaveChangesAsync();
+
+            return entity;
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)
@@ -68,6 +102,14 @@ namespace Data.Repositories
                     .AsNoTracking();
 
             return await query.ToListAsync();
+        }
+
+        public TEntity AddSync(TEntity entity)
+        {
+            _DbSet.Add(entity);
+            _AppDbContext.SaveChanges();
+
+            return entity;
         }
     }
 }

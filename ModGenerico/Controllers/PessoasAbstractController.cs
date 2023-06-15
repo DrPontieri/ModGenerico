@@ -36,16 +36,18 @@ namespace ModGenerico.Controllers
              
             var pessoa = await _pessoaabstractrepository.GetPessoasId(id);
 
+            pessoa.DadosPessoais = await _dadospessoaisbstractrepository.GetDadosPessoais(c => c.PessoaId == pessoa.Id);
+
             if (pessoa == null)
             {
                 return NotFound();
             }
 
-            return Ok(pessoa);
-            //return CreatedAtAction("ObterPesssoa", new { id = pessoa.Id }, pessoa);
+            return CreatedAtAction("GetPessoasId", new { id = pessoa.Id }, pessoa);
         }
 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[Route("PessoasEndpoint")]
         [HttpPost]
         public async Task<ActionResult<Pessoa>> PostPessoa(PostPessoaDto request)
         {
@@ -53,41 +55,65 @@ namespace ModGenerico.Controllers
 
             if (request.Id == 0)
             {
-                var NewPessoa = new Pessoa();
-                NewPessoa.DataCadastro = DateTime.Now;
+                var NewPessoa = new Pessoa
+                {
+                    DataCadastro = DateTime.Now,
+                    DadosPessoais = new DadosPessoais
+                    {
+                        Nome = request.nome,
+                        Email = request.email,
+                        Pais = request.pais,
+                        DtNascimento = request.dtNascimento                        
+                    }
+                };
 
                 PessoaOK = await _pessoaabstractrepository.AddPessoaAsync(NewPessoa);
             }
-
-            PostDadosPessoaisDto Dados = new PostDadosPessoaisDto();
-            Dados.nome = request.nome;
-            Dados.pais = request.pais;
-            Dados.email = request.email;
-            Dados.dtNacimento = request.dtNacimento;
-            Dados.PessoaID = PessoaOK.Id;
-
-            return CreatedAtAction("CreateDadosPessoais", PessoaOK, Dados);
+            
+            return CreatedAtAction("GetPessoasId", new { id = PessoaOK.Id }, PessoaOK);
         }
 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
 
-        [HttpPost("CreateDP")]
-        public async Task<ActionResult<Pessoa>> CreateDadosPessoais(PostDadosPessoaisDto request)
-        {
-            Pessoa PessoaOK = new Pessoa();
+        //[ActionName("CreateDP")]
+        //public Pessoa CreateDadosPessoais(PostDadosPessoaisDto requestDpPessoa)
+        //{
+        //    returCreateDpOk(requestDpPessoa);
+        //}
 
-            if (request.PessoaID == 0)
-            {
-                var NewPessoa = new Pessoa();
-                NewPessoa.DataCadastro = DateTime.Now;
+        //[Route("CreateDpEndpoint")]
+        //[HttpPost]
+        //public async Task<ActionResult<DadosPessoais>> PostDadosPessoais(PostDadosPessoaisDto requestDpPessoa)
+        //{
+        //    Pessoa PessoaOK = new Pessoa();
+        //    if (requestDpPessoa.PessoaID == 0)
+        //    {
+        //        var NewPessoa = new Pessoa {
+        //            DataCadastro = DateTime.Now,
+        //            DadosPessoais = new DadosPessoais
+        //            {
+        //                Nome = requestDpPessoa.nome,
+        //                PessoaId = requestDpPessoa.PessoaID,
+        //                Email = requestDpPessoa.email,
+        //                Pais = requestDpPessoa.pais,
+        //                DtNascimento = requestDpPessoa.dtNascimento
+        //            }                
+        //    };
 
-                PessoaOK = await _pessoaabstractrepository.AddPessoaAsync(NewPessoa);
-            }
+        //        PessoaOK =  await _pessoaabstractrepository.AddPessoaAsync(NewPessoa);
+        //    }
+            
+        //        PessoaOK = await _pessoaabstractrepository.GetPessoasId(requestDpPessoa.PessoaID);
 
-            return CreatedAtAction("GetPessoasId", new { id = PessoaOK.Id }, PessoaOK);
+                
 
+        //        //var DadosPessoaisCreated = _dadospessoaisbstractrepository.AddDadosPessoais(DpNovo);
+        //        //PessoaOK.DadosPessoais = DadosPessoaisCreated;
+             
 
-            //pessoa.DadosPessoais = new DadosPessoais("Danel", "email@email.com.br", "Brasil", pessoaId, DateTime.Now);
-        }
+        //    return CreatedAtAction("GetPessoasId", new { id = PessoaOK.Id }, PessoaOK);
+
+        //    //pessoa.DadosPessoais = new DadosPessoais("Danel", "email@email.com.br", "Brasil", pessoaId, DateTime.Now);
+        //}
     }
 }

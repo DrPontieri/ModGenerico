@@ -20,14 +20,16 @@ namespace Data.Context
                 .HasForeignKey<DadosPessoais>(e => e.PessoaId)
                 .IsRequired();
 
-            modelBuilder.Entity<Pessoa>()
-                .HasMany(e => e.Logradouros)
-                .WithOne(e => e.Pessoa)
-                .IsRequired();
+            //modelBuilder.Entity<Pessoa>()
+            //    .HasMany(e => e.Logradouros)
+            //    .WithOne(e => e.Pessoa)
+            //    .IsRequired();
         }
 
         //public DbSet<Carro> Carros { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<DadosPessoais> DadosPessoaisS { get; set; }
+
+        public DbSet<Logradouro> LogradourosS { get; set; }
     }
 }

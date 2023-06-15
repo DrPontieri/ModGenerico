@@ -2,6 +2,7 @@
 using Data.Context;
 using Data.Repositories.Abstractions;
 using Domain;
+using Domain.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,12 +30,14 @@ namespace Data.Repositories
 
             //await _dadospessoaisRepository.AddAsync(entity.DadosPessoais);
 
-            return entity;
+            return pessoa;
         }
 
-        public async Task AddDadosPessoaisAsync(DadosPessoais entity)
+        
+
+        public Task<DadosPessoais> AddDadosPessoaisAsync(DadosPessoais entity)
         {
-            await _dadospessoaisRepository.AddAsync(entity);
+            return _dadospessoaisRepository.AddAsync(entity);
         }
 
         public async Task<Pessoa> GetPessoasId(int id)
@@ -45,6 +48,11 @@ namespace Data.Repositories
         public async Task<ICollection<Pessoa>> ObterPessoas()
         {
             return await _pessoaRepository.Obter();
+        }
+
+        public Task AddDadosPessoais(DadosPessoais entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

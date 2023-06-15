@@ -18,5 +18,6 @@ namespace Domain
 
         [JsonIgnore]
         public Pessoa Pessoa { get; set; }
+        public int PessoaId { get; set; }   
     }
 }

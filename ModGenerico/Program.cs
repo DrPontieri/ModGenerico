@@ -13,10 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
-//builder.Services.AddTransient(typeof(IUserService), typeof(UserService));
-//builder.Services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
-//builder.Services.AddTransient(typeof(ITecnologiaRepository), typeof(TecnologiaRepository));
-//builder.Services.AddTransient(typeof(ITipoTecnologiaRepository), typeof(TipoTecnologiaRepository));
 builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<IPessoaAbstractRepository, PessoaAbstractRepository>();
 builder.Services.AddScoped<IDadosPessoaisAbstractRepository, DadosPessoaisAbstractRepository>();

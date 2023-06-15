@@ -6,14 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Domain.Dto;
 
 namespace Data.Repositories.Abstractions
 {
     public interface IPessoaAbstractRepository
     {
         Task<Pessoa> AddPessoaAsync(Pessoa entity);
-
-        Task AddDadosPessoaisAsync(DadosPessoais entity);
 
         Task<Pessoa> GetPessoasId(int id);
 

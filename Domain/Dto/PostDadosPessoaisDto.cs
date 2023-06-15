@@ -11,7 +11,7 @@ namespace Domain.Dto
         public string nome { get; set; }
         public string email { get; set; }
         public string pais { get; set; }
-        public DateTime dtNacimento { get; set; }
+        public DateTime dtNascimento { get; set; }
         public int PessoaID { get; set; }
     }
 }
