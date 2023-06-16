@@ -7,8 +7,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\**" />
+    <Compile Remove="Models\**" />
+    <Compile Remove="Views\**" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="Data\**" />
+    <Content Remove="Models\**" />
+    <Content Remove="Views\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <EmbeddedResource Remove="Views\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Data\**" />
+    <None Remove="Models\**" />
+    <None Remove="Views\**" />
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\CarroesAbstractController.cs" />
     <Compile Remove="Controllers\CarroesController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ScaffoldingReadMe.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,9 +59,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Data\" />
-    <Folder Include="Models\" />
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>
