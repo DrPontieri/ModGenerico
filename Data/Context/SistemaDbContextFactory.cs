@@ -15,7 +15,7 @@ namespace Data.Context
         {
 
             IConfiguration configuration = new ConfigurationBuilder()
-               .SetBasePath("C:\\Users\\drpon\\source\\repos\\ModGenerico\\ModGenerico")
+               .SetBasePath(Directory.GetCurrentDirectory())
                .AddJsonFile("appsettings.json")
                .Build();
 

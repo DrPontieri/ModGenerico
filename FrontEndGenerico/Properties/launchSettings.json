@@ -1,0 +1,45 @@
+﻿{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:5825",
+      "sslPort": 44344
+    }
+  },
+  "profiles": {
+    "FrontEndGenerico": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7169;http://localhost:5209",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },
+  "profileContent": {
+    "properties": {
+      "commandName": {
+        "type": "string",
+        "description": "Identifies the debug target to run.",
+        "enum": [
+          "Executable",
+          "Project",
+          "IIS",
+          "IISExpress" //,
+          //"DebugRoslynComponent",
+          //"Docker",
+          //"DockerCompose"
+        ]
+      }
+    }
+  }
+}

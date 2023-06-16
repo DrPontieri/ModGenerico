@@ -26,7 +26,7 @@ namespace Data.Context
             //    .IsRequired();
         }
 
-        //public DbSet<Carro> Carros { get; set; }
+        public DbSet<Carro> Carros { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<DadosPessoais> DadosPessoaisS { get; set; }
 

@@ -22,6 +22,27 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Domain.Carro", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Potencia")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carros");
+                });
+
             modelBuilder.Entity("Domain.DadosPessoais", b =>
                 {
                     b.Property<int>("Id")
@@ -86,7 +107,7 @@ namespace Data.Migrations
 
                     b.HasIndex("PessoaId");
 
-                    b.ToTable("Logradouro");
+                    b.ToTable("LogradourosS");
                 });
 
             modelBuilder.Entity("Domain.Pessoa", b =>
@@ -119,7 +140,7 @@ namespace Data.Migrations
             modelBuilder.Entity("Domain.Logradouro", b =>
                 {
                     b.HasOne("Domain.Pessoa", "Pessoa")
-                        .WithMany("Logradouros")
+                        .WithMany()
                         .HasForeignKey("PessoaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -131,8 +152,6 @@ namespace Data.Migrations
                 {
                     b.Navigation("DadosPessoais")
                         .IsRequired();
-
-                    b.Navigation("Logradouros");
                 });
 #pragma warning restore 612, 618
         }

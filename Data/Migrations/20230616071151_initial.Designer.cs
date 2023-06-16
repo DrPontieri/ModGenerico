@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230601100216_ajustecamposbanco")]
-    partial class ajustecamposbanco
+    [Migration("20230616071151_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,7 +88,7 @@ namespace Data.Migrations
 
                     b.HasIndex("PessoaId");
 
-                    b.ToTable("Logradouro");
+                    b.ToTable("LogradourosS");
                 });
 
             modelBuilder.Entity("Domain.Pessoa", b =>
@@ -121,7 +121,7 @@ namespace Data.Migrations
             modelBuilder.Entity("Domain.Logradouro", b =>
                 {
                     b.HasOne("Domain.Pessoa", "Pessoa")
-                        .WithMany("Logradouros")
+                        .WithMany()
                         .HasForeignKey("PessoaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -133,8 +133,6 @@ namespace Data.Migrations
                 {
                     b.Navigation("DadosPessoais")
                         .IsRequired();
-
-                    b.Navigation("Logradouros");
                 });
 #pragma warning restore 612, 618
         }
