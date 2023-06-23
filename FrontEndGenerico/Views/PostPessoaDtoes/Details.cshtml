@@ -1,0 +1,114 @@
+﻿@model Domain.Dto.PostPessoaDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PostPessoaDto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DtCadastro)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DtCadastro)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.nome)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.nome)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.pais)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.pais)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.dtNascimento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.dtNascimento)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cidade)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.cidade)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.estado)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.estado)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cep)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.cep)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.endereco)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.endereco)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.numero)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.numero)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.bairro)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.bairro)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.complemento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.complemento)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cardownername)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.cardownername)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cardnumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.cardnumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.expirationdate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.expirationdate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.securitycode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.securitycode)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

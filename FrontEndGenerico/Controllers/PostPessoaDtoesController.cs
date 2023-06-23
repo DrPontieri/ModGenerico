@@ -6,94 +6,91 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Data.Context;
-using Domain;
+using Domain.Dto;
 
 namespace FrontEndGenerico.Controllers
 {
-    public class DadosPessoaisController : Controller
+    public class PostPessoaDtoesController : Controller
     {
         private readonly AppDbContext _context;
 
-        public DadosPessoaisController(AppDbContext context)
+        public PostPessoaDtoesController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: DadosPessoais
+        // GET: PostPessoaDtoes
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.DadosPessoaisS.Include(d => d.Pessoa);
-            return View(await appDbContext.ToListAsync());
+              return _context.Posts != null ? 
+                          View(await _context.Posts.ToListAsync()) :
+                          Problem("Entity set 'AppDbContext.Posts'  is null.");
         }
 
-        // GET: DadosPessoais/Details/5
+        // GET: PostPessoaDtoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.DadosPessoaisS == null)
+            if (id == null || _context.Posts == null)
             {
                 return NotFound();
             }
 
-            var dadosPessoais = await _context.DadosPessoaisS
-                .Include(d => d.Pessoa)
+            var postPessoaDto = await _context.Posts
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dadosPessoais == null)
+            if (postPessoaDto == null)
             {
                 return NotFound();
             }
 
-            return View(dadosPessoais);
+            return View(postPessoaDto);
         }
 
-        // GET: DadosPessoais/Create
+        // GET: PostPessoaDtoes/Create
         public IActionResult Create()
         {
-            ViewData["PessoaId"] = new SelectList(_context.Pessoas, "Id", "Id");
             return View();
         }
 
-        // POST: DadosPessoais/Create
+        // POST: PostPessoaDtoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Nome,Email,Pais,DtNascimento,PessoaId,Id")] DadosPessoais dadosPessoais)
+        public async Task<IActionResult> Create([Bind("DtCadastro,nome,email,pais,dtNascimento,cidade,estado,cep,endereco,numero,bairro,complemento,cardownername,cardnumber,expirationdate,securitycode,Id")] PostPessoaDto postPessoaDto)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dadosPessoais);
+                _context.Add(postPessoaDto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoas, "Id", "Id", dadosPessoais.PessoaId);
-            return View(dadosPessoais);
+            return View(postPessoaDto);
         }
 
-        // GET: DadosPessoais/Edit/5
+        // GET: PostPessoaDtoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.DadosPessoaisS == null)
+            if (id == null || _context.Posts == null)
             {
                 return NotFound();
             }
 
-            var dadosPessoais = await _context.DadosPessoaisS.FindAsync(id);
-            if (dadosPessoais == null)
+            var postPessoaDto = await _context.Posts.FindAsync(id);
+            if (postPessoaDto == null)
             {
                 return NotFound();
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoas, "Id", "Id", dadosPessoais.PessoaId);
-            return View(dadosPessoais);
+            return View(postPessoaDto);
         }
 
-        // POST: DadosPessoais/Edit/5
+        // POST: PostPessoaDtoes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Nome,Email,Pais,DtNascimento,PessoaId,Id")] DadosPessoais dadosPessoais)
+        public async Task<IActionResult> Edit(int id, [Bind("DtCadastro,nome,email,pais,dtNascimento,cidade,estado,cep,endereco,numero,bairro,complemento,cardownername,cardnumber,expirationdate,securitycode,Id")] PostPessoaDto postPessoaDto)
         {
-            if (id != dadosPessoais.Id)
+            if (id != postPessoaDto.Id)
             {
                 return NotFound();
             }
@@ -102,12 +99,12 @@ namespace FrontEndGenerico.Controllers
             {
                 try
                 {
-                    _context.Update(dadosPessoais);
+                    _context.Update(postPessoaDto);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DadosPessoaisExists(dadosPessoais.Id))
+                    if (!PostPessoaDtoExists(postPessoaDto.Id))
                     {
                         return NotFound();
                     }
@@ -118,51 +115,49 @@ namespace FrontEndGenerico.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PessoaId"] = new SelectList(_context.Pessoas, "Id", "Id", dadosPessoais.PessoaId);
-            return View(dadosPessoais);
+            return View(postPessoaDto);
         }
 
-        // GET: DadosPessoais/Delete/5
+        // GET: PostPessoaDtoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.DadosPessoaisS == null)
+            if (id == null || _context.Posts == null)
             {
                 return NotFound();
             }
 
-            var dadosPessoais = await _context.DadosPessoaisS
-                .Include(d => d.Pessoa)
+            var postPessoaDto = await _context.Posts
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (dadosPessoais == null)
+            if (postPessoaDto == null)
             {
                 return NotFound();
             }
 
-            return View(dadosPessoais);
+            return View(postPessoaDto);
         }
 
-        // POST: DadosPessoais/Delete/5
+        // POST: PostPessoaDtoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.DadosPessoaisS == null)
+            if (_context.Posts == null)
             {
-                return Problem("Entity set 'AppDbContext.DadosPessoaisS'  is null.");
+                return Problem("Entity set 'AppDbContext.Posts'  is null.");
             }
-            var dadosPessoais = await _context.DadosPessoaisS.FindAsync(id);
-            if (dadosPessoais != null)
+            var postPessoaDto = await _context.Posts.FindAsync(id);
+            if (postPessoaDto != null)
             {
-                _context.DadosPessoaisS.Remove(dadosPessoais);
+                _context.Posts.Remove(postPessoaDto);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DadosPessoaisExists(int id)
+        private bool PostPessoaDtoExists(int id)
         {
-          return (_context.DadosPessoaisS?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Posts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

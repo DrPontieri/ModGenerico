@@ -17,6 +17,9 @@ builder.Services.AddControllers();
 builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<IPessoaAbstractRepository, PessoaAbstractRepository>();
 builder.Services.AddScoped<IDadosPessoaisAbstractRepository, DadosPessoaisAbstractRepository>();
+builder.Services.AddScoped<ILogradouroAbstractRepository, LogradouroAbstractRepository>();
+builder.Services.AddScoped<IPaymentDetailAbstractRepository, PaymentDetailAbstractRepository>();
+//builder.Services.AddScoped<IDadosPessoaisAbstractRepository, DadosPessoaisAbstractRepository>();
 //builder.Services.AddScoped<ICarroRepository, CarroRepository>();
 
 //builder.Services.AddScoped<IUnitOfWork,  UnitOfWork>();

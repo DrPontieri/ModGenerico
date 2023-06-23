@@ -25,6 +25,14 @@ namespace Domain
         public Pessoa Pessoa { get; set; }
         public int PessoaId { get; set; }
 
+        //[JsonIgnore]
+        //public Logradouro Logradouro { get; set; }
+        //public int LogradouroId { get; set; }
+
+        //[JsonIgnore]
+        //public PaymentDetail PaymentDetail { get; set; }
+        //public int PaymentDetailId { get; set; }
+
         //public DadosPessoais(string nome, string email, string pais, DateTime? dtNascimento)
         //{
         //    Nome = nome;

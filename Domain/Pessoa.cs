@@ -17,6 +17,10 @@ namespace Domain
         public DateTime DataCadastro { get; set; }
         public DadosPessoais DadosPessoais { get; set; }
 
+        public Logradouro Logradouro { get; set; }
+
+        public PaymentDetail PaymentDetail { get; set; }
+
         //public List<Logradouro> Logradouros { get; set;}
 
         //public Pessoa(DateTime? dataCadastro)

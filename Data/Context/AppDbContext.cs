@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Dto;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata;
@@ -31,5 +32,9 @@ namespace Data.Context
         public DbSet<DadosPessoais> DadosPessoaisS { get; set; }
 
         public DbSet<Logradouro> LogradourosS { get; set; }
+
+        public DbSet<PaymentDetail> paymentDetails { get; set; }
+
+        public DbSet<PostPessoaDto> Posts { get; set; }
     }
 }

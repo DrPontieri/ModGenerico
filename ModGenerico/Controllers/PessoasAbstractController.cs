@@ -21,29 +21,39 @@ namespace ModGenerico.Controllers
     {
         private readonly IPessoaAbstractRepository _pessoaabstractrepository;
         private readonly IDadosPessoaisAbstractRepository _dadospessoaisbstractrepository;
+        private readonly ILogradouroAbstractRepository _logradouroabstractrepository;
+        private readonly IPaymentDetailAbstractRepository _paymentDetailAbstractRepository;
 
 
-        public PessoasAbstractController(IPessoaAbstractRepository pessoaabstractrepository, IDadosPessoaisAbstractRepository dadospessoaisbstractrepository)
+        public PessoasAbstractController(
+            IPessoaAbstractRepository pessoaabstractrepository, 
+            IDadosPessoaisAbstractRepository dadospessoaisbstractrepository, 
+            ILogradouroAbstractRepository logradouroabstractrepository,
+            IPaymentDetailAbstractRepository paymentdetailrepository)
         {
             _pessoaabstractrepository = pessoaabstractrepository;
-            _dadospessoaisbstractrepository = dadospessoaisbstractrepository;   
+            _dadospessoaisbstractrepository = dadospessoaisbstractrepository;
+            _logradouroabstractrepository = logradouroabstractrepository;
+            _paymentDetailAbstractRepository = paymentdetailrepository;
         }
 
         // GET: api/Pessoas/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Pessoa>> GetPessoasId(int id)
         {
-             
             var pessoa = await _pessoaabstractrepository.GetPessoasId(id);
 
-            pessoa.DadosPessoais = await _dadospessoaisbstractrepository.GetDadosPessoais(c => c.PessoaId == pessoa.Id);
-
             if (pessoa == null)
-            {
                 return NotFound();
-            }
 
-            return CreatedAtAction("GetPessoasId", new { id = pessoa.Id }, pessoa);
+            pessoa.DadosPessoais = await _dadospessoaisbstractrepository.GetDadosPessoais(c => c.PessoaId == id);
+
+            pessoa.Logradouro = await _logradouroabstractrepository.GetLogradouro(c => c.PessoaId == id);
+
+            pessoa.PaymentDetail = await _paymentDetailAbstractRepository.GetPaymentDetail(c => c.PessoaId == id);
+
+            //return CreatedAtAction("GetPessoasId", new { id = pessoa.Id }, pessoa);
+            return Ok(pessoa);
         }
 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -64,6 +74,23 @@ namespace ModGenerico.Controllers
                         Email = request.email,
                         Pais = request.pais,
                         DtNascimento = request.dtNascimento                        
+                    },
+                    Logradouro = new Logradouro 
+                    {
+                        Cidade = request.cidade,
+                        Estado = request.estado,
+                        Bairro = request.bairro,
+                        Cep = request.cep,
+                        Complemento = request.complemento,
+                        Numero = request.numero,
+                        Endereco = request.endereco
+                    },
+                    PaymentDetail= new PaymentDetail
+                    {
+                        CardOwnerName = request.cardownername,
+                        CardNumber = request.cardnumber,
+                        ExpirationDate = request.expirationdate,
+                        SecurityCode = request.securitycode
                     }
                 };
 

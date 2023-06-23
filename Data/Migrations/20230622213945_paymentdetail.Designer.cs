@@ -4,6 +4,7 @@ using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230622213945_paymentdetail")]
+    partial class paymentdetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,23 +91,11 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Cep")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Cidade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Complemento")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Endereco")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Estado")
+                    b.Property<string>("Endereço")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -117,8 +107,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PessoaId")
-                        .IsUnique();
+                    b.HasIndex("PessoaId");
 
                     b.ToTable("LogradourosS");
                 });
@@ -143,17 +132,11 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(5)");
 
-                    b.Property<int>("PessoaId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(3)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PessoaId")
-                        .IsUnique();
 
                     b.ToTable("paymentDetails");
                 });
@@ -188,19 +171,8 @@ namespace Data.Migrations
             modelBuilder.Entity("Domain.Logradouro", b =>
                 {
                     b.HasOne("Domain.Pessoa", "Pessoa")
-                        .WithOne("Logradouro")
-                        .HasForeignKey("Domain.Logradouro", "PessoaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pessoa");
-                });
-
-            modelBuilder.Entity("Domain.PaymentDetail", b =>
-                {
-                    b.HasOne("Domain.Pessoa", "Pessoa")
-                        .WithOne("PaymentDetail")
-                        .HasForeignKey("Domain.PaymentDetail", "PessoaId")
+                        .WithMany()
+                        .HasForeignKey("PessoaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -210,12 +182,6 @@ namespace Data.Migrations
             modelBuilder.Entity("Domain.Pessoa", b =>
                 {
                     b.Navigation("DadosPessoais")
-                        .IsRequired();
-
-                    b.Navigation("Logradouro")
-                        .IsRequired();
-
-                    b.Navigation("PaymentDetail")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
