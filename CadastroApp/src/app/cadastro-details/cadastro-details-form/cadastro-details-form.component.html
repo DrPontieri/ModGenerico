@@ -1,0 +1,82 @@
+<form  required (ngSubmit)="onFormSubmit(service.formData)" >
+  <input type="hidden" name="Id" [value]="service.formData.Id">
+  <div class="form-row">
+  <div class="form-group col-md-6">
+    <label>Nome:</label>
+    <input class="form-control form-control-lg" placeholder="nome" name="nome" #nome="ngModel" [(ngModel)]="service.formData.nome" required />
+  </div>
+  <div class="form-group col-md-6">
+    <label>Email:</label>
+    <input class="form-control form-control-lg" placeholder="abc@gmail.com" name="email" email="true" #email="ngModel" [(ngModel)]="service.formData.email" required [pattern]="emailPattern"/>
+ </div>
+</div>
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label>País:</label>
+    <input class="form-control form-control-lg" placeholder="País" name="pais" #pais="ngModel" [(ngModel)]="service.formData.pais" required/>
+  </div>
+  <div class="form-group col-md-6">
+    <label>Data Nascimento:</label>
+    <input class="form-control form-control-lg" placeholder="Data de Nascimento" name="dtNascimento" #dtNascimento="ngModel" [(ngModel)]="service.formData.dtNascimento"  required/>
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label>Cidade:</label>
+    <input class="form-control form-control-lg" placeholder="Cidade" name="cidade" #cidade="ngModel" [(ngModel)]="service.formData.cidade" required/>
+  </div>
+  <div class="form-group col-md-6">
+    <label>Estado:</label>
+    <input class="form-control form-control-lg" placeholder="Estado" name="estado" #estado="ngModel" [(ngModel)]="service.formData.estado" required/>
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label>Cep:</label>
+    <input class="form-control form-control-lg" placeholder="Cep" name="cep" #cep="ngModel" [(ngModel)]="service.formData.cep" required/>
+  </div>
+  <div class="form-group col-md-6">
+    <label>Endereço:</label>
+    <input class="form-control form-control-lg" placeholder="Endereço" name="endereco" #endereco="ngModel" [(ngModel)]="service.formData.endereco" required/>
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group col-md-4">
+    <label>Numero:</label>
+    <input class="form-control form-control-lg" placeholder="Numero" name="numero" #numero="ngModel" [(ngModel)]="service.formData.numero" required/>
+  </div>
+  <div class="form-group col-md-4">
+    <label>Bairro:</label>
+    <input class="form-control form-control-lg" placeholder="Bairro" name="bairro" #bairro="ngModel" [(ngModel)]="service.formData.bairro" required/>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label>Complemento:</label>
+    <input class="form-control form-control-lg" placeholder="Complemento" name="complemento" #complemento="ngModel" [(ngModel)]="service.formData.complemento" required/>
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label>Nome Cartão:</label>
+    <input class="form-control form-control-lg" placeholder="Nome Cartão" name="cardownername" #cardownername="ngModel" [(ngModel)]="service.formData.cardownername" required/>
+  </div>
+  <div class="form-group col-md-6">
+    <label>Numero Cartão:</label>
+    <input class="form-control form-control-lg" placeholder="16 digitos do cartão" name="cardnumber" #cardnumber="ngModel" [(ngModel)]="service.formData.cardnumber" required maxlength="16" minlength="16"/>
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label>Data Validade:</label>
+    <input class="form-control form-control-lg" placeholder="MM/YY" name="expirationdate" #expirationdate="ngModel" [(ngModel)]="service.formData.expirationdate" required maxlength="5" minlength="5"/>
+  </div>
+  <div class="form-group col-md-6">
+    <label>Código de Segurança:</label>
+    <input class="form-control form-control-lg" placeholder="Código de Segurança" name="securitycode" #securitycode="ngModel" [(ngModel)]="service.formData.securitycode" required maxlength="3" minlength="3"/>
+  </div>
+</div>
+<div class="form-group">
+  <button class="btn btn-info btn-lg btn-block" type="submit">Enviar</button>
+</div>
+</form>

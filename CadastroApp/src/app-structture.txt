@@ -1,0 +1,14 @@
+src
+|----app
+|    |-----cadastro-details
+|    |     --cadastro-details.component.ts|html|css
+|    |	 ----cadastro-details-form
+|    |	 |   |---cadastro-details-form.component.ts|html|css
+|    |
+|    ---shared
+|       --cadastro-details-service.ts
+|       --cadastro-details-model.ts
+|    |
+|    |--app.module.ts
+|
+|--index.html(cdn path for bootstrap & fa icon)
