@@ -12,6 +12,7 @@ using Data.Repositories;
 using core.Models;
 using NuGet.Protocol;
 using Domain.Dto;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace ModGenerico.Controllers
 {
@@ -67,13 +68,13 @@ namespace ModGenerico.Controllers
             {
                 var NewPessoa = new Pessoa
                 {
-                    DataCadastro = DateTime.Now,
+                    DataCadastro = Convert.ToDateTime(DateTime.Now),
                     DadosPessoais = new DadosPessoais
                     {
                         Nome = request.nome,
                         Email = request.email,
                         Pais = request.pais,
-                        DtNascimento = request.dtNascimento                        
+                        DtNascimento = Convert.ToDateTime(request.dtNascimento).ToShortDateString()
                     },
                     Logradouro = new Logradouro 
                     {

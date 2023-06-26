@@ -11,4 +11,8 @@ export class CadastroDetailsService {
 
   readonly BaseUrl ='https://localhost:7095/api/PessoasAbstract';
   formData: CadastroDetails = new CadastroDetails();
+
+PostPessoa(){
+    return this.http.post(this.BaseUrl, this.formData)
+  }
 }

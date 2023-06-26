@@ -1,20 +1,20 @@
 export class CadastroDetails {
   //Pessoa
-  Id:number =0;
-  DtCadastro:string ='';
+  Id:number = 0;
+  DtCadastro:string = '';
 
         //Dados Pessoais
         nome:string ='';
         email:string ='';
         pais:string ='';
-        dtNascimento:string ='';
+        dtNascimento:string = '';
 
         //Logradouro
         cidade:string ='';
         estado:string ='';
         cep:string ='';
         endereco:string ='';
-        numero:number =0;
+        numero:number;
         bairro:string ='';
         complemento:string ='';
 
