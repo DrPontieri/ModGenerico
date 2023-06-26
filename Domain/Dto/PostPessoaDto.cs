@@ -15,7 +15,7 @@ namespace Domain.Dto
         public string DtCadastro { get; set; }
 
         //Dados Pessoais
-        public string? nome { get; set; }
+        public string nome { get; set; }
         public string email { get; set; }
         public string pais { get; set; }
         public string dtNascimento { get; set; }
