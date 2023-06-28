@@ -15,9 +15,12 @@ export class CadastroDetailsComponent implements OnInit {
   constructor(public service:CadastroDetailsService){}
 
   ngOnInit(): void {
-this.service.GetPessoasList()
+    const teste = this.listTeste()
+    //this.service.GetPessoasList()
+    console.log(teste);
   }
 
-
-
+  listTeste(){
+   return this.service.GetPessoasList()
+}
 }

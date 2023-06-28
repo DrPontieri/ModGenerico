@@ -34,5 +34,7 @@ namespace Domain.Dto
         public string cardnumber { get; set; }
         public string expirationdate { get; set; }
         public string securitycode { get; set; }
+
+        public int pessoaid { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Domain;
 using Domain.Dto;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol;
 using System.Net.Mime;
 
 namespace ModGenerico.Controllers
@@ -32,53 +33,36 @@ namespace ModGenerico.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ICollection<PostDadosPessoaisDto>>> GetPessoasList()
+        public async Task<ActionResult<ICollection<PostPessoaDto>>> GetPessoasList()
         {
             var pessoasList = await _pessoaabstractrepository.ObterPessoas();
 
             if (pessoasList == null)
                 return NotFound();
 
-            //var pessoasDadosPessoaisList = await _dadospessoaisbstractrepository.GetListDadosPessoais();
-
-            //var pessoasLogradouroList = await _logradouroabstractrepository.GetListLogradouro();
-
-            // var pessoasPaymentDetailsList = await _paymentDetailAbstractRepository.GetListPaymentDetail();
+            var listPessoaDto = new List<PostPessoaDto>();
 
             foreach (var pessoa in pessoasList)
             {
                 pessoa.DadosPessoais = _dadospessoaisbstractrepository.GetDadosPessoais(c => c.PessoaId == pessoa.Id).ConfigureAwait(false).GetAwaiter().GetResult();
                 pessoa.Logradouro = _logradouroabstractrepository.GetLogradouro(c => c.PessoaId == pessoa.Id).ConfigureAwait(false).GetAwaiter().GetResult();
                 pessoa.PaymentDetail = _paymentDetailAbstractRepository.GetPaymentDetail(c => c.PessoaId == pessoa.Id).ConfigureAwait(false).GetAwaiter().GetResult();
+
+                var PessoaDto = new PessoaMapper().toDto(pessoa);
+
+                //var DadosPessoaisDto = new PostDadosPessoaisDto
+                //{
+                //    PessoaID = pessoa.Id,
+                //    dtNascimento = pessoa.DadosPessoais.DtNascimento.ToShortDateString(),
+                //    nome = pessoa.DadosPessoais.Nome,
+                //    email = pessoa.DadosPessoais.Email,
+                //    pais = pessoa.DadosPessoais.Pais
+                //};
+
+                listPessoaDto.Add(PessoaDto);
             }
 
-            //foreach (var pessoa in pessoasList)
-            //{
-            //    pessoa.DadosPessoais = await _dadospessoaisbstractrepository.GetDadosPessoais(c => c.PessoaId == pessoa.Id);
-            //    pessoa.Logradouro = await _logradouroabstractrepository.GetLogradouro(c => c.PessoaId == pessoa.Id);
-            //    pessoa.PaymentDetail = await _paymentDetailAbstractRepository.GetPaymentDetail(c => c.PessoaId == pessoa.Id);
-            //}
-
-            var listDadosPessoais = new List<PostDadosPessoaisDto>();
-
-            foreach (var item in pessoasList)
-            {
-                
-                var DadosPessoaisDto = new PostDadosPessoaisDto
-                {
-                    PessoaID = item.Id,
-                    dtNascimento = item.DadosPessoais.DtNascimento.ToShortDateString(),
-                    nome = item.DadosPessoais.Nome,
-                    email = item.DadosPessoais.Email,
-                    pais = item.DadosPessoais.Pais
-                };
-
-                listDadosPessoais.Add(DadosPessoaisDto);
-                
-            }
-            
-
-            return listDadosPessoais.OrderBy(c => c.PessoaID).ToList();
+            return listPessoaDto.OrderBy(c => c.Id).ToList();
             //return pessoasList.OrderBy(c => c.Id).ToList();
         }
 
@@ -86,7 +70,7 @@ namespace ModGenerico.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Pessoa>> GetPessoasId(int id)
+        public async Task<ActionResult<PessoaMapper>> GetPessoasId(int id)
         {
             var pessoa = await _pessoaabstractrepository.GetPessoasId(id);
 
@@ -99,8 +83,9 @@ namespace ModGenerico.Controllers
 
             pessoa.PaymentDetail = await _paymentDetailAbstractRepository.GetPaymentDetail(c => c.PessoaId == id);
 
+            var pessoadto = new PessoaMapper().toDto(pessoa);
             //return CreatedAtAction("GetPessoasId", new { id = pessoa.Id }, pessoa);
-            return Ok(pessoa);
+            return Ok(pessoadto);
         }
 
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -115,36 +100,38 @@ namespace ModGenerico.Controllers
                 return BadRequest();
 
             Pessoa PessoaOK = new Pessoa();
-            var NewPessoa = new Pessoa
-            {
-                DataCadastro = Convert.ToDateTime(DateTime.Now),
-                DadosPessoais = new DadosPessoais
-                {
-                    Nome = request.nome,
-                    Email = request.email,
-                    Pais = request.pais,
-                    DtNascimento = Convert.ToDateTime(Convert.ToDateTime(request.dtNascimento).ToShortDateString())
-                },
-                Logradouro = new Logradouro
-                {
-                    Cidade = request.cidade,
-                    Estado = request.estado,
-                    Bairro = request.bairro,
-                    Cep = request.cep,
-                    Complemento = request.complemento,
-                    Numero = request.numero,
-                    Endereco = request.endereco
-                },
-                PaymentDetail = new PaymentDetail
-                {
-                    CardOwnerName = request.cardownername,
-                    CardNumber = request.cardnumber,
-                    ExpirationDate = request.expirationdate,
-                    SecurityCode = request.securitycode
-                }
-            };
+            //var NewPessoa = new Pessoa
+            //{
+            //    DataCadastro = Convert.ToDateTime(DateTime.Now),
+            //    DadosPessoais = new DadosPessoais
+            //    {
+            //        Nome = request.nome,
+            //        Email = request.email,
+            //        Pais = request.pais,
+            //        DtNascimento = Convert.ToDateTime(Convert.ToDateTime(request.dtNascimento).ToShortDateString())
+            //    },
+            //    Logradouro = new Logradouro
+            //    {
+            //        Cidade = request.cidade,
+            //        Estado = request.estado,
+            //        Bairro = request.bairro,
+            //        Cep = request.cep,
+            //        Complemento = request.complemento,
+            //        Numero = request.numero,
+            //        Endereco = request.endereco
+            //    },
+            //    PaymentDetail = new PaymentDetail
+            //    {
+            //        CardOwnerName = request.cardownername,
+            //        CardNumber = request.cardnumber,
+            //        ExpirationDate = request.expirationdate,
+            //        SecurityCode = request.securitycode
+            //    }
+            //};
 
-            PessoaOK = await _pessoaabstractrepository.AddPessoaAsync(NewPessoa);
+            var PessoaEntity = new PessoaMapper().toEntity(request);
+
+            PessoaOK = await _pessoaabstractrepository.AddPessoaAsync(PessoaEntity);
 
             return CreatedAtAction("GetPessoasId", new { id = PessoaOK.Id }, PessoaOK);
         }

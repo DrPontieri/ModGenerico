@@ -14,15 +14,15 @@ export class CadastroDetailsService {
 
   readonly BaseUrl ='https://localhost:7095/api/PessoasAbstract';
   formData: CadastroDetails = new CadastroDetails();
-  list: CadastroDetailsDp[];
+  list: CadastroDetails[];
 
 PostPessoa(){
     return this.http.post(this.BaseUrl, this.formData);
   }
 
 GetPessoasList(){
-  return this.http.get<CadastroDetailsDp[]>(this.BaseUrl).subscribe(data => {
-    this.list = data
+  return this.http.get(this.BaseUrl).subscribe(data => {
+    this.list = data as CadastroDetails[]
   })
 
 }
