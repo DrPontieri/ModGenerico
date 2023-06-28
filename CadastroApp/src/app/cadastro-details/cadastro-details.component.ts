@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CadastroDetailsService } from '../shared/cadastro-details.service';
+import { CadastroDetails } from '../shared/cadastro-details.model';
+import { concatAll } from 'rxjs/internal/operators/concatAll';
+import { map } from 'rxjs/internal/operators/map';
 
 @Component({
   selector: 'app-cadastro-details',
@@ -6,6 +10,14 @@ import { Component } from '@angular/core';
   styles: [
   ]
 })
-export class CadastroDetailsComponent {
+export class CadastroDetailsComponent implements OnInit {
+
+  constructor(public service:CadastroDetailsService){}
+
+  ngOnInit(): void {
+this.service.GetPessoasList()
+  }
+
+
 
 }

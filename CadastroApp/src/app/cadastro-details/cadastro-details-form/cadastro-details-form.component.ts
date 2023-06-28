@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { CompleteNotification, Observable } from 'rxjs';
 import { CadastroDetails } from 'src/app/shared/cadastro-details.model';
 import { CadastroDetailsService } from 'src/app/shared/cadastro-details.service';
+
 
 
 
@@ -16,7 +18,8 @@ import { CadastroDetailsService } from 'src/app/shared/cadastro-details.service'
 
 export class CadastroDetailsFormComponent implements OnInit {
 
-constructor(public service:CadastroDetailsService){
+constructor(public service:CadastroDetailsService,
+  private toastr:ToastrService){
 
 }
 
@@ -29,10 +32,18 @@ onSubmit(form:NgForm){
 
   const myObserver={
     error:(err:Error) => console.error('Observer got an error: ' + err),
-    complete: () => console.log('Observer got a complete notification'),
+    complete: (res:CompleteNotification) => console.log('Observer got a complete notification'),
   };
 
-  myobservable.subscribe(myObserver);
+myobservable.subscribe(res =>{
+  this.resetForm(form);
+  this.toastr.success('Enviado com Sucesso!!', 'Cadastro Pessoa')
+})
 };
+
+resetForm(form:NgForm){
+  form.form.reset();
+  this.service.formData = new CadastroDetails();
+}
 
 }

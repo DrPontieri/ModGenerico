@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Data.Context;
+﻿using Data.Repositories.Abstractions;
 using Domain;
-using Data.Repositories.Abstractions;
-using Data.Repositories;
-using core.Models;
-using NuGet.Protocol;
 using Domain.Dto;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace ModGenerico.Controllers
 {
@@ -27,8 +17,8 @@ namespace ModGenerico.Controllers
 
 
         public PessoasAbstractController(
-            IPessoaAbstractRepository pessoaabstractrepository, 
-            IDadosPessoaisAbstractRepository dadospessoaisbstractrepository, 
+            IPessoaAbstractRepository pessoaabstractrepository,
+            IDadosPessoaisAbstractRepository dadospessoaisbstractrepository,
             ILogradouroAbstractRepository logradouroabstractrepository,
             IPaymentDetailAbstractRepository paymentdetailrepository)
         {
@@ -38,8 +28,64 @@ namespace ModGenerico.Controllers
             _paymentDetailAbstractRepository = paymentdetailrepository;
         }
 
+        // GET: api/Pessoas
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ICollection<PostDadosPessoaisDto>>> GetPessoasList()
+        {
+            var pessoasList = await _pessoaabstractrepository.ObterPessoas();
+
+            if (pessoasList == null)
+                return NotFound();
+
+            //var pessoasDadosPessoaisList = await _dadospessoaisbstractrepository.GetListDadosPessoais();
+
+            //var pessoasLogradouroList = await _logradouroabstractrepository.GetListLogradouro();
+
+            // var pessoasPaymentDetailsList = await _paymentDetailAbstractRepository.GetListPaymentDetail();
+
+            foreach (var pessoa in pessoasList)
+            {
+                pessoa.DadosPessoais = _dadospessoaisbstractrepository.GetDadosPessoais(c => c.PessoaId == pessoa.Id).ConfigureAwait(false).GetAwaiter().GetResult();
+                pessoa.Logradouro = _logradouroabstractrepository.GetLogradouro(c => c.PessoaId == pessoa.Id).ConfigureAwait(false).GetAwaiter().GetResult();
+                pessoa.PaymentDetail = _paymentDetailAbstractRepository.GetPaymentDetail(c => c.PessoaId == pessoa.Id).ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+
+            //foreach (var pessoa in pessoasList)
+            //{
+            //    pessoa.DadosPessoais = await _dadospessoaisbstractrepository.GetDadosPessoais(c => c.PessoaId == pessoa.Id);
+            //    pessoa.Logradouro = await _logradouroabstractrepository.GetLogradouro(c => c.PessoaId == pessoa.Id);
+            //    pessoa.PaymentDetail = await _paymentDetailAbstractRepository.GetPaymentDetail(c => c.PessoaId == pessoa.Id);
+            //}
+
+            var listDadosPessoais = new List<PostDadosPessoaisDto>();
+
+            foreach (var item in pessoasList)
+            {
+                
+                var DadosPessoaisDto = new PostDadosPessoaisDto
+                {
+                    PessoaID = item.Id,
+                    dtNascimento = item.DadosPessoais.DtNascimento.ToShortDateString(),
+                    nome = item.DadosPessoais.Nome,
+                    email = item.DadosPessoais.Email,
+                    pais = item.DadosPessoais.Pais
+                };
+
+                listDadosPessoais.Add(DadosPessoaisDto);
+                
+            }
+            
+
+            return listDadosPessoais.OrderBy(c => c.PessoaID).ToList();
+            //return pessoasList.OrderBy(c => c.Id).ToList();
+        }
+
         // GET: api/Pessoas/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Pessoa>> GetPessoasId(int id)
         {
             var pessoa = await _pessoaabstractrepository.GetPessoasId(id);
@@ -60,88 +106,47 @@ namespace ModGenerico.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[Route("PessoasEndpoint")]
         [HttpPost]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Pessoa>> PostPessoa(PostPessoaDto request)
         {
+            if (request.Id != 0)
+                return BadRequest();
+
             Pessoa PessoaOK = new Pessoa();
-
-            if (request.Id == 0)
+            var NewPessoa = new Pessoa
             {
-                var NewPessoa = new Pessoa
+                DataCadastro = Convert.ToDateTime(DateTime.Now),
+                DadosPessoais = new DadosPessoais
                 {
-                    DataCadastro = Convert.ToDateTime(DateTime.Now),
-                    DadosPessoais = new DadosPessoais
-                    {
-                        Nome = request.nome,
-                        Email = request.email,
-                        Pais = request.pais,
-                        DtNascimento = Convert.ToDateTime(request.dtNascimento).ToShortDateString()
-                    },
-                    Logradouro = new Logradouro 
-                    {
-                        Cidade = request.cidade,
-                        Estado = request.estado,
-                        Bairro = request.bairro,
-                        Cep = request.cep,
-                        Complemento = request.complemento,
-                        Numero = request.numero,
-                        Endereco = request.endereco
-                    },
-                    PaymentDetail= new PaymentDetail
-                    {
-                        CardOwnerName = request.cardownername,
-                        CardNumber = request.cardnumber,
-                        ExpirationDate = request.expirationdate,
-                        SecurityCode = request.securitycode
-                    }
-                };
+                    Nome = request.nome,
+                    Email = request.email,
+                    Pais = request.pais,
+                    DtNascimento = Convert.ToDateTime(Convert.ToDateTime(request.dtNascimento).ToShortDateString())
+                },
+                Logradouro = new Logradouro
+                {
+                    Cidade = request.cidade,
+                    Estado = request.estado,
+                    Bairro = request.bairro,
+                    Cep = request.cep,
+                    Complemento = request.complemento,
+                    Numero = request.numero,
+                    Endereco = request.endereco
+                },
+                PaymentDetail = new PaymentDetail
+                {
+                    CardOwnerName = request.cardownername,
+                    CardNumber = request.cardnumber,
+                    ExpirationDate = request.expirationdate,
+                    SecurityCode = request.securitycode
+                }
+            };
 
-                PessoaOK = await _pessoaabstractrepository.AddPessoaAsync(NewPessoa);
-            }
-            
+            PessoaOK = await _pessoaabstractrepository.AddPessoaAsync(NewPessoa);
+
             return CreatedAtAction("GetPessoasId", new { id = PessoaOK.Id }, PessoaOK);
         }
-
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-
-        //[ActionName("CreateDP")]
-        //public Pessoa CreateDadosPessoais(PostDadosPessoaisDto requestDpPessoa)
-        //{
-        //    returCreateDpOk(requestDpPessoa);
-        //}
-
-        //[Route("CreateDpEndpoint")]
-        //[HttpPost]
-        //public async Task<ActionResult<DadosPessoais>> PostDadosPessoais(PostDadosPessoaisDto requestDpPessoa)
-        //{
-        //    Pessoa PessoaOK = new Pessoa();
-        //    if (requestDpPessoa.PessoaID == 0)
-        //    {
-        //        var NewPessoa = new Pessoa {
-        //            DataCadastro = DateTime.Now,
-        //            DadosPessoais = new DadosPessoais
-        //            {
-        //                Nome = requestDpPessoa.nome,
-        //                PessoaId = requestDpPessoa.PessoaID,
-        //                Email = requestDpPessoa.email,
-        //                Pais = requestDpPessoa.pais,
-        //                DtNascimento = requestDpPessoa.dtNascimento
-        //            }                
-        //    };
-
-        //        PessoaOK =  await _pessoaabstractrepository.AddPessoaAsync(NewPessoa);
-        //    }
-            
-        //        PessoaOK = await _pessoaabstractrepository.GetPessoasId(requestDpPessoa.PessoaID);
-
-                
-
-        //        //var DadosPessoaisCreated = _dadospessoaisbstractrepository.AddDadosPessoais(DpNovo);
-        //        //PessoaOK.DadosPessoais = DadosPessoaisCreated;
-             
-
-        //    return CreatedAtAction("GetPessoasId", new { id = PessoaOK.Id }, PessoaOK);
-
-        //    //pessoa.DadosPessoais = new DadosPessoais("Danel", "email@email.com.br", "Brasil", pessoaId, DateTime.Now);
-        //}
     }
 }

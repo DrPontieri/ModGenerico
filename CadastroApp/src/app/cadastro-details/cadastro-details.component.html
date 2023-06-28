@@ -7,7 +7,25 @@
     <app-cadastro-details-form></app-cadastro-details-form>
   </div>
   <div class="col-md-6">
-    Lista Cadastro
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th>Nome</th>
+          <th>País</th>
+          <th>Cidade</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cp of service.list">
+          <th>{{ cp.pessoaid }}</th>
+          <th>{{ cp.nome }}</th>
+          <th>{{ cp.pais }}</th>
+          <th>{{ cp.email }}</th>
+          <th></th>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
