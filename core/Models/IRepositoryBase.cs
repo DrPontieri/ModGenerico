@@ -12,7 +12,7 @@ namespace core.Models
     public interface IRepositoryBase<TEntity> where TEntity : Entity
     {
 
-        Task<ICollection<TEntity>> ObterList(Expression<Func<TEntity, bool>> filter = null);
+        Task<ICollection<TEntity>> ObterListAsync(Expression<Func<TEntity, bool>> filter = null);
 
         Task<TEntity> ObterObj(Expression<Func<TEntity, bool>> filter = null);
 
@@ -23,9 +23,7 @@ namespace core.Models
         //Task<TEntity> AddDadosPessoais(TEntity entity);
         Task<TEntity> AddAsync(TEntity entity);
         Task DeletarAsync(TEntity entity);
-        Task Atualizar(TEntity entity);
-
-        public TEntity AddSync(TEntity entity);
+        Task<TEntity> Atualizar(TEntity entity);
         
     }
 }

@@ -23,7 +23,7 @@ namespace Data.Repositories
 
         public async Task<ICollection<PaymentDetail>> GetListPaymentDetail(Expression<Func<PaymentDetail, bool>> filter = null)
         {
-            return await _paymentdetailrepository.ObterList(filter);
+            return await _paymentdetailrepository.ObterListAsync(filter);
         }
 
         public async Task<PaymentDetail> GetPaymentDetail(Expression<Func<PaymentDetail, bool>> filter = null)

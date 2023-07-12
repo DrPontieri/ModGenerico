@@ -8,9 +8,9 @@
   </div>
   <div class="col-md-6">
     <table class="table">
-      <thead class="thead-light">
+      <thead class="font-weight-light">
         <tr>
-          <!--<th>Id</th>-->
+          <th>Id</th>
           <th>Nome</th>
           <th>País</th>
           <th>Email</th>
@@ -19,11 +19,13 @@
       </thead>
       <tbody>
         <tr *ngFor="let cp of service.list">
-          <!--<th>{{ cp. }}</th>-->
-          <th>{{ cp.nome }}</th>
-          <th>{{ cp.pais }}</th>
-          <th>{{ cp.email }}</th>
-          <th></th>
+          <th class="font-weight-light">{{ cp.id }}</th>
+          <th class="font-weight-light">{{ cp.nome }}</th>
+          <th class="font-weight-light">{{ cp.pais }}</th>
+          <th class="font-weight-light">{{ cp.email }}</th>
+          <th class="font-weight-light">
+            <i class="far fa-trash-alt fa-lg text-danger"></i>
+          </th>
         </tr>
       </tbody>
     </table>

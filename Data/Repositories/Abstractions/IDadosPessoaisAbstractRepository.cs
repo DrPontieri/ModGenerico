@@ -13,10 +13,8 @@ namespace Data.Repositories.Abstractions
     public interface IDadosPessoaisAbstractRepository
     {
         Task<ICollection<DadosPessoais>> GetListDadosPessoais(Expression<Func<DadosPessoais, bool>> filter = null);
-
         Task<DadosPessoais> GetDadosPessoais(Expression<Func<DadosPessoais, bool>> filter = null);
-        DadosPessoais AddDadosPessoais(DadosPessoais entity);
-        Task AddAsync(DadosPessoais entity);
+        Task<DadosPessoais> AddAsync(DadosPessoais entity);
 
     }
 }

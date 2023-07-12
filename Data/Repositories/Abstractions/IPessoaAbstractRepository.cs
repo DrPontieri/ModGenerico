@@ -1,22 +1,20 @@
 ﻿using core.Models;
 using Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Domain.Dto;
+using System.Linq.Expressions;
 
 namespace Data.Repositories.Abstractions
 {
     public interface IPessoaAbstractRepository
     {
+        Task<ICollection<Pessoa>> ObterPessoasAsync();
+
+        Task<Pessoa> ObterPorIdAsync(int id);
+
         Task<Pessoa> AddPessoaAsync(Pessoa entity);
 
-        Task<Pessoa> GetPessoasId(int id);
-
-        Task<ICollection<Pessoa>> ObterPessoas();
+        Task<Pessoa> UpdatePessoa(Pessoa pessoa);
+        Task DeletePessoa(Pessoa pessoa);
 
     }
 }

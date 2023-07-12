@@ -23,7 +23,7 @@ namespace Data.Repositories
 
         public async Task<ICollection<Logradouro>> GetListLogradouro(Expression<Func<Logradouro, bool>> filter = null)
         {
-            return await _logradouroRepository.ObterList(filter);
+            return await _logradouroRepository.ObterListAsync(filter);
         }
 
         public async Task<Logradouro> GetLogradouro(Expression<Func<Logradouro, bool>> filter = null)

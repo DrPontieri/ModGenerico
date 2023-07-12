@@ -1,6 +1,7 @@
 export class CadastroDetails {
   //Pessoa
-  Id:number = 0;
+  id:number = 0;
+  pessoaid:number=0;
   DtCadastro:string = '';
 
         //Dados Pessoais

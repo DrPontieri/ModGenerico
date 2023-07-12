@@ -27,14 +27,14 @@ namespace Data.Repositories
         //    return await _dadospessoaisRepository.Obter(id);
         //}
 
-        public async Task AddAsync(DadosPessoais entity)
+        public async Task<DadosPessoais> AddAsync(DadosPessoais entity)
         {
-            await _dadospessoaisRepository.AddAsync(entity);
+            return await _dadospessoaisRepository.AddAsync(entity);
         }
 
-        public DadosPessoais AddDadosPessoais(DadosPessoais entity)
+        public async Task<DadosPessoais> AddDadosPessoais(DadosPessoais entity)
         {
-            return _dadospessoaisRepository.AddSync(entity);   
+            return await _dadospessoaisRepository.AddAsync(entity);   
         }
 
         public async Task<DadosPessoais> GetDadosPessoais(Expression<Func<DadosPessoais, bool>> filter = null)
@@ -44,7 +44,7 @@ namespace Data.Repositories
 
         public async Task<ICollection<DadosPessoais>> GetListDadosPessoais(Expression<Func<DadosPessoais, bool>> filter = null)
         {
-            return await _dadospessoaisRepository.ObterList(filter);
+            return await _dadospessoaisRepository.ObterListAsync(filter);
         }
     }
 }

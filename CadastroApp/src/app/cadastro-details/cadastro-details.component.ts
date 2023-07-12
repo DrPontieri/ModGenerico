@@ -8,6 +8,7 @@ import { map } from 'rxjs/internal/operators/map';
   selector: 'app-cadastro-details',
   templateUrl: './cadastro-details.component.html',
   styles: [
+
   ]
 })
 export class CadastroDetailsComponent implements OnInit {
@@ -15,12 +16,9 @@ export class CadastroDetailsComponent implements OnInit {
   constructor(public service:CadastroDetailsService){}
 
   ngOnInit(): void {
-    const teste = this.listTeste()
-    //this.service.GetPessoasList()
-    console.log(teste);
+    this.service.GetPessoasList()
   }
 
-  listTeste(){
-   return this.service.GetPessoasList()
-}
+
+
 }
